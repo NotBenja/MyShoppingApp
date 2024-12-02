@@ -1,10 +1,11 @@
 import { Filters } from './Filters.jsx';
 
-export function Header({ changeFilters }) {
+
+export function Header() {
   return (
     <header>
-      <h1>MyShoppingApp</h1>
-      <Filters onChange = { changeFilters } />
+      <h1> MyShoppingApp </h1>
+      <Filters/>
     </header>
   );
 }

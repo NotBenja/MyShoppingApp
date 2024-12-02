@@ -1,19 +1,19 @@
 import { useState, useEffect, useId } from 'react';
 import { products } from '../mocks/products.json';
+import { useFilters } from '../hooks/useFilters';
 
 import './Filters.css';
 
-export function Filters( { onChange }) {
-    const [maxPrice, setMaxPrice] = useState(1000);
+export function Filters( ) {
+    const { filters, setFilters } = useFilters();
+
     const maxPriceFilterId = useId();
-
-
-    const [categories, setCategories] = useState([]);
     const categoryFilterId = useId();
+    const [categories, setCategories] = useState([]);
+   
 
-    const handlePriceChange = (event) => {
-        setMaxPrice(event.target.value)
-        onChange( prevState => ({
+    const handleMaxPriceChange = (event) => {
+        setFilters( prevState => ({
             ...prevState,
             maxPrice: event.target.value
         })
@@ -21,7 +21,7 @@ export function Filters( { onChange }) {
     };
 
     const handleCategoryChange = (event) => {
-        onChange(prevState => ({
+        setFilters(prevState => ({
             ...prevState,
             category: event.target.value
         }))
@@ -41,9 +41,10 @@ export function Filters( { onChange }) {
                     id= {maxPriceFilterId}
                     min="0"
                     max="1000"
-                    onChange={handlePriceChange}
+                    onChange={handleMaxPriceChange}
+                    value={filters.maxPrice}
                 />
-                <span>${maxPrice}</span>
+                <span>${filters.maxPrice}</span>
             </div>
             
             <div>
