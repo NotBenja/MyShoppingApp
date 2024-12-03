@@ -35,12 +35,12 @@ export function Filters( ) {
     return (
         <section className="filters">
             <div>
-                <label htmlFor="price">Precio Máximo: </label>
+                <label htmlFor={maxPriceFilterId}>Precio Máximo: </label>
                 <input 
                     type="range"
                     id= {maxPriceFilterId}
                     min="0"
-                    max="1000"
+                    max="2000"
                     onChange={handleMaxPriceChange}
                     value={filters.maxPrice}
                 />
