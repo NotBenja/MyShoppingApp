@@ -1,11 +1,11 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: system-ui, 'Roboto', 'Open Sans', 'Lato', 'Inter', Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #313131;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -52,4 +52,22 @@ button:focus-visible {
 ul {
   list-style: none;
   padding: 0;
+}
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 1rem 2rem;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+header .filters {
+  margin-top: 1rem;
 }
