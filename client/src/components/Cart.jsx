@@ -1,12 +1,26 @@
+import { useState, useEffect, useId } from 'react';
 import './Cart.css';
 
-import { useId } from 'react';
 import { CartIcon, ClearCartIcon } from './Icons.jsx';
 import { useCart } from '../hooks/useCart.js';
 
 function CartItem({ thumbnail, price, title, quantity, addToCart }) {
+  const [isAdded, setIsAdded] = useState(false);
+
+  useEffect(() => {
+    if (isAdded) {
+      const timer = setTimeout(() => setIsAdded(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isAdded]);
+
+  const handleAddToCart = () => {
+    addToCart();
+    setIsAdded(true);
+  };
+
   return (
-    <li>
+    <li className={isAdded ? 'cart-item-added' : ''}>
       <img
         src={thumbnail}
         alt={title}
@@ -17,9 +31,9 @@ function CartItem({ thumbnail, price, title, quantity, addToCart }) {
 
       <footer>
         <small>
-          Qty: {quantity}
+          Cantidad: {quantity}
         </small>
-        <button onClick={addToCart}>+</button>
+        <button onClick={handleAddToCart}>+</button>
       </footer>
     </li>
   );
@@ -28,6 +42,10 @@ function CartItem({ thumbnail, price, title, quantity, addToCart }) {
 export function Cart() {
   const cartCheckboxId = useId();
   const { cart, clearCart, addToCart } = useCart();
+
+  const totalPrice = cart.reduce((total, product) => {
+    return total + product.price * product.quantity;
+  }, 0);
 
   return (
     <>
@@ -46,6 +64,10 @@ export function Cart() {
             />
           ))}
         </ul>
+
+        <div className="total-price">
+          <strong>Total: ${totalPrice.toFixed(2)}</strong>
+        </div>
 
         <button onClick={clearCart}>
           <ClearCartIcon />
