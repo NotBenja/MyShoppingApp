@@ -5,17 +5,25 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #313131;
+  background-color: #2f2f2f;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --primary-color: #09f;
+  --secondary-color: #487180;
+  --background-color: #6f6f6fa2;
+  --text-color: #333;
+  --button-hover-color: #007bff;
+  --button-background-color: #fffbfb;
+  --button-border-color: #ffffff;
 }
 
 #root {
-  max-width: 600px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -25,9 +33,13 @@
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Roboto', sans-serif;
 }
 
 button {
@@ -37,12 +49,14 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--button-background-color);
+  color: #fff;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.25s, border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  background-color: var(--button-hover-color);
+  border-color: var(--button-border-color);
 }
 button:focus,
 button:focus-visible {
@@ -54,7 +68,7 @@ ul {
   padding: 0;
 }
 header {
-  background-color: #333;
+  background-color: var(--secondary-color);
   color: #fff;
   padding: 1rem 2rem;
   text-align: center;

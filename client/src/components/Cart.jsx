@@ -55,6 +55,12 @@ export function Cart() {
       <input id={cartCheckboxId} type='checkbox' hidden />
 
       <aside className='cart'>
+        <div className="cart-header">
+          <h2>Carrito</h2>
+          <label className='close-cart-button' htmlFor={cartCheckboxId}>
+            &times;
+          </label>
+        </div>
         <ul>
           {cart.map(product => (
             <CartItem
@@ -69,7 +75,7 @@ export function Cart() {
           <strong>Total: ${totalPrice.toFixed(2)}</strong>
         </div>
 
-        <button onClick={clearCart}>
+        <button className="clear-cart-button" onClick={clearCart}>
           <ClearCartIcon />
         </button>
       </aside>

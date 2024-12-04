@@ -10,7 +10,7 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   width: 100%;
-  max-width: 1200px; /* Puedes ajustar este valor según tus necesidades */
+  max-width: 100%; 
 }
 
 .products li {
@@ -19,7 +19,7 @@
   gap: 1rem;
   box-shadow: 0 0 10px 10px rgba(0, 0, 0, .1);
   border-radius: 4px;
-  background: #111;
+  background: #616161;
   color: #fff;
   padding: 1rem;
 }
@@ -40,4 +40,25 @@
   display: block;
   object-fit: cover;
   background: #fff;
+}
+
+.product-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cart-button:hover {
+  background-color: #007bff7e;
 }

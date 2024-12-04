@@ -4,7 +4,7 @@ import { Filters } from './Filters.jsx';
 export function Header() {
   return (
     <header>
-      <h1> MyShoppingApp </h1>
+      <h1> ¡Bienvenid@! 😁 </h1>
       <Filters/>
     </header>
   );

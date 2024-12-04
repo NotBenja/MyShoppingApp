@@ -25,6 +25,9 @@
   transform: translateX(100%);
   transition: transform 0.3s ease-in-out;
   overflow-y: auto;
+  z-index: 1001; 
+  display: flex;
+  flex-direction: column;
 }
 
 .cart img {
@@ -58,12 +61,10 @@
   height: 32px;
   justify-content: center;
   padding: 4px;
-  position: fixed;
-  right: 8px;
-  top: 8px;
+  position: relative; 
   transition: all 0.3s ease;
   width: 32px;
-  z-index: 9999;
+  z-index: 1000; 
 }
 
 .cart-button:hover {
@@ -74,9 +75,55 @@
   transform: translateX(0);
 }
 
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.close-cart-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
 .total-price {
   margin-top: 1rem;
   font-size: 1.2rem;
   text-align: right;
   color: #fff;
+}
+
+.cart ul {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 1rem; 
+}
+
+.cart .total-price,
+.cart button {
+  margin-top: auto;
+  padding: 1rem; 
+}
+
+.cart .clear-cart-button {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.clear-cart-button{
+  position: relative;
+}
+
+.cart .clear-cart-button:hover {
+  background-color: #cc0000;
 }
