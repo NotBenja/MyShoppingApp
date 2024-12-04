@@ -1,36 +1,62 @@
--- Crear el esquema shopping_app
-CREATE SCHEMA IF NOT EXISTS `shopping_app` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
--- Usar el esquema shopping_app
-USE `shopping_app`;
+-- -----------------------------------------------------
+-- Schema tienda
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `tienda` DEFAULT CHARACTER SET utf8 ;
+USE `tienda`;
 
--- Crear la tabla products
-CREATE TABLE IF NOT EXISTS `products` (
+-- -----------------------------------------------------
+-- Table `tienda`.`productos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tienda`.`productos` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(255) NOT NULL,
-  `description` TEXT NOT NULL,
-  `price` DECIMAL(10, 2) NOT NULL,
-  `discountPercentage` DECIMAL(5, 2) NOT NULL,
-  `rating` DECIMAL(3, 2) NOT NULL,
-  `stock` INT NOT NULL,
-  `brand` VARCHAR(255) NOT NULL,
-  `category` VARCHAR(255) NOT NULL,
-  `thumbnail` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `nombre` VARCHAR(100) NOT NULL,
+  `descripcion` TEXT NULL,
+  `precio` DECIMAL(10,2) NOT NULL,
+  `fecha_creacion` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
--- Crear la tabla product_images
-CREATE TABLE IF NOT EXISTS `product_images` (
+-- -----------------------------------------------------
+-- Table `tienda`.`inventario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tienda`.`inventario` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `product_id` INT NOT NULL,
-  `image_url` VARCHAR(255) NOT NULL,
+  `producto_id` INT NOT NULL,
+  `cantidad` INT NOT NULL,
+  `ultima_actualizacion` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `fk_product_images_products_idx` (`product_id` ASC),
-  CONSTRAINT `fk_product_images_products`
-    FOREIGN KEY (`product_id`)
-    REFERENCES `shopping_app`.`products` (`id`)
+  INDEX `fk_inventario_productos_idx` (`producto_id` ASC),
+  CONSTRAINT `fk_inventario_productos`
+    FOREIGN KEY (`producto_id`)
+    REFERENCES `tienda`.`productos` (`id`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `tienda`.`ventas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tienda`.`ventas` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `producto_id` INT NOT NULL,
+  `cantidad` INT NOT NULL,
+  `total` DECIMAL(10,2) NOT NULL,
+  `fecha_venta` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `fk_ventas_productos_idx` (`producto_id` ASC),
+  CONSTRAINT `fk_ventas_productos`
+    FOREIGN KEY (`producto_id`)
+    REFERENCES `tienda`.`productos` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 COMMIT;
