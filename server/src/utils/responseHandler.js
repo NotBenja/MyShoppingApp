@@ -1,19 +1,15 @@
-export function success (req, res, message, status) {
-    const statusCode = status || 200;
-    const okMessage = message || '';
-    res.status(statusCode).send({
+export function success (req, res, message = '', status = 200) {
+    res.status(status).send({
         error: false,
-        status: statusCode,
-        body: okMessage
+        status: status,
+        body: message
     });
 }
 
-export function error (req, res, message, status) {
-    const statusCode = status || 200;
-    const errorMessage = message || 'Internal Error';
-    res.status(statusCode).send({
+export function error (req, res, message = 'Internal Error', status = 500) {
+    res.status(status).send({
         error: true,
-        status: statusCode,
-        body: errorMessage
+        status: status,
+        body: message
     });
 }
