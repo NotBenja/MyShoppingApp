@@ -6,7 +6,9 @@ services:
       - MYSQL_DATABASE=tienda
     ports:
       - "3307:3306"
-    
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+  
   app:
     build: .
     depends_on:
@@ -15,5 +17,3 @@ services:
       - mysqldb
     ports:
       - "4000:4000"
-
-

@@ -66,8 +66,10 @@ async function exists(table, id) {
 
 async function insert(table, data) {
     try {
-        if (data.fecha_creacion) {
-            data.fecha_creacion = moment(data.fecha_creacion).format('YYYY-MM-DD HH:mm:ss');
+        for (const key in data) {
+            if (data.hasOwnProperty(key) && moment(data[key], moment.ISO_8601, true).isValid()) {
+                data[key] = moment(data[key]).format('YYYY-MM-DD HH:mm:ss');
+            }
         }
         const [result] = await pool.query(`INSERT INTO ${table} SET ?`, [data]);
         return result.insertId;
@@ -79,8 +81,10 @@ async function insert(table, data) {
 
 async function update(table, data) {
     try {
-        if (data.fecha_creacion) {
-            data.fecha_creacion = moment(data.fecha_creacion).format('YYYY-MM-DD HH:mm:ss');
+        for (const key in data) {
+            if (data.hasOwnProperty(key) && moment(data[key], moment.ISO_8601, true).isValid()) {
+                data[key] = moment(data[key]).format('YYYY-MM-DD HH:mm:ss');
+            }
         }
         const [result] = await pool.query(`UPDATE ${table} SET ? WHERE id = ?`, [data, data.id]);
         return result.affectedRows;

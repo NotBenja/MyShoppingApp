@@ -1,26 +1,23 @@
 import db from '../db/mysql.js';
 
-const table = 'productos';
-
-function all(){
+function all(table) {
     return db.all(table);
 }
 
-function one(id){
+function one(table, id) {
     return db.one(table, id);
 }
 
-function deleteP(body){
+function deleteP(table, body) {
     return db.deleteP(table, body);
 }
 
-function create(body){
+function create(table, body) {
     return db.create(table, body);
 }
 
-function exists(id){
+function exists(table, id) {
     return db.exists(table, id);
 }
-
 
 export default { all, one, deleteP, create, exists };

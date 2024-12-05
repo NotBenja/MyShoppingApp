@@ -1,21 +1,24 @@
 import express from 'express';
 import { config } from './config.js';
-import morgan  from 'morgan'
+import morgan from 'morgan';
 import error from './middleware/errors.js';
-import products from './modules/products/routes.js';
+import productsRoutes from './modules/routes/productRoutes.js';
+import inventoryRoutes from './modules/routes/inventoryRoutes.js';
+import salesRoutes from './modules/routes/salesRoutes.js';
 
 const app = express();
 
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
-//Configuracion del puerto
+// Configuracion del puerto
 app.set('port', config.app.port);
 
-
-//Rutas
-app.use('/api/products', products)
+// Rutas
+app.use('/api/products', productsRoutes);
+app.use('/api/inventory', inventoryRoutes);
+app.use('/api/sales', salesRoutes);
 app.use(error);
 
 export default app;
