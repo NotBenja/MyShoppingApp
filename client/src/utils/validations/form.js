@@ -1,13 +1,10 @@
 import * as yup from "yup";
 
-const formSchema = yup
-  .object({
-    id: yup.string().required("ID is required!"),
-    nombre: yup.string().trim().required("Name is required!"),
-    descripcion: yup.string().trim().required("Description is required!"),
-    precio: yup.number().required("Price is required!"),
-    fecha_creacion: yup.date().required("Creation date is required!"),
-  })
-  .required();
+const formSchema = yup.object().shape({
+  nombre: yup.string().required("Nombre es requerido"),
+  descripcion: yup.string().required("Descripción es requerida"),
+  precio: yup.number().required("Precio es requerido").positive("El precio debe ser positivo"),
+  fecha_creacion: yup.date().required("Fecha de creación es requerida"),
+});
 
 export default formSchema;

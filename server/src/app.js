@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors'; 
 import { config } from './config.js';
 import morgan from 'morgan';
 import error from './middleware/errors.js';
@@ -7,7 +8,7 @@ import inventoryRoutes from './modules/routes/inventoryRoutes.js';
 import salesRoutes from './modules/routes/salesRoutes.js';
 
 const app = express();
-
+app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { addRows } from "features/tableSlice";
+import { addRows, fetchProducts } from "features/tableSlice";
 import formSchema from "utils/validations/form";
 import toast from "react-hot-toast";
-import { hasDuplicateValues } from "../../utils/hasDuplicateValues";
 import SubmitButton from "../common/SubmitButton";
 import TableContent from "./TableContent";
+import axiosInstance from "../../axiosConfig";
 
 const Form = () => {
   const rows = useSelector((state) => state.productos.rows);
@@ -17,26 +17,32 @@ const Form = () => {
     handleSubmit,
     reset,
     formState: { isDirty, isValid, isSubmitting, isSubmitSuccessful },
-    setValue,
   } = useForm({
     resolver: yupResolver(formSchema),
   });
 
   useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
     reset();
   }, [isSubmitSuccessful]);
 
-  const submitHandler = (data) => {
-    if (hasDuplicateValues([...rows, { id: data.id }], "id")) {
-      toast.error("Duplicate ID! Please choose a different ID.");
-      return;
-    }
+  const submitHandler = async (data) => {
     const formattedData = {
+      id: 0, 
       ...data,
       fecha_creacion: new Date(data.fecha_creacion).toISOString(),
     };
-    dispatch(addRows(formattedData));
-    reset();
+
+    try {
+      await axiosInstance.post("/products", formattedData);
+      toast.success("Producto agregado correctamente");
+      window.location.reload();
+    } catch (error) {
+      toast.error("Error al agregar el producto");
+    }
   };
 
   return (
@@ -48,17 +54,9 @@ const Form = () => {
         <label className="input input-bordered input-sm flex items-center gap-2 my-3">
           <input
             type="text"
-            {...register("id")}
-            className="grow"
-            placeholder="ID"
-          />
-        </label>
-        <label className="input input-bordered input-sm flex items-center gap-2 my-3">
-          <input
-            type="text"
             {...register("nombre")}
             className="grow"
-            placeholder="Name"
+            placeholder="Nombre"
           />
         </label>
         <label className="input input-bordered input-sm flex items-center gap-2 my-3">
@@ -66,15 +64,16 @@ const Form = () => {
             type="text"
             {...register("descripcion")}
             className="grow"
-            placeholder="Description"
+            placeholder="Descripción"
           />
         </label>
         <label className="input input-bordered input-sm flex items-center gap-2 my-3">
           <input
             type="number"
+            step="0.01"
             {...register("precio")}
             className="grow"
-            placeholder="Price"
+            placeholder="Precio"
           />
         </label>
         <label className="input input-bordered input-sm flex items-center gap-2 my-3">
@@ -82,11 +81,11 @@ const Form = () => {
             type="date"
             {...register("fecha_creacion")}
             className="grow"
-            placeholder="Creation Date"
+            placeholder="Fecha de creación"
           />
         </label>
         <SubmitButton
-          title={"Add"}
+          title={"Agregar"}
           isDirty={isDirty}
           isValid={isValid}
           isSubmitting={isSubmitting}

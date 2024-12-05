@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { addInventario } from "features/inventarioSlice";
-import formSchema from "utils/validations/inventarioForm";
+import { addInventario, fetchInventario } from "features/inventarioSlice";
+import inventarioFormSchema from "utils/validations/inventarioForm";
 import toast from "react-hot-toast";
-import { hasDuplicateValues } from "../../utils/hasDuplicateValues";
 import SubmitButton from "../common/SubmitButton";
-import TableContent from "./InventarioTableContent";
+import InventarioTableContent from "./InventarioTableContent";
+import axiosInstance from "../../axiosConfig";
 
 const InventarioForm = () => {
   const rows = useSelector((state) => state.inventario.rows);
@@ -17,39 +17,40 @@ const InventarioForm = () => {
     handleSubmit,
     reset,
     formState: { isDirty, isValid, isSubmitting, isSubmitSuccessful },
-    setValue,
   } = useForm({
-    resolver: yupResolver(formSchema),
+    resolver: yupResolver(inventarioFormSchema),
   });
+
+  useEffect(() => {
+    dispatch(fetchInventario());
+  }, [dispatch]);
+
   useEffect(() => {
     reset();
   }, [isSubmitSuccessful]);
-  const submitHandler = (data) => {
-    if (hasDuplicateValues([...rows, { id: data.id }], "id")) {
-      toast.error("Duplicate ID! Please choose a different ID.");
-      return;
-    }
+
+  const submitHandler = async (data) => {
     const formattedData = {
+      id: 0, 
       ...data,
       ultima_actualizacion: new Date(data.ultima_actualizacion).toISOString(),
     };
-    dispatch(addInventario(formattedData));
-    reset();
+
+    try {
+      await axiosInstance.post("/inventory", formattedData);
+      toast.success("Inventario agregado correctamente");
+      window.location.reload();
+    } catch (error) {
+      toast.error("Error al agregar el inventario");
+    }
   };
+
   return (
     <>
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="bg-blue-200 w-72 p-5 rounded-xl shadow-xl m-auto relative"
       >
-        <label className="input input-bordered input-sm flex items-center gap-2 my-3">
-          <input
-            type="number"
-            {...register("id")}
-            className="grow"
-            placeholder="ID"
-          />
-        </label>
         <label className="input input-bordered input-sm flex items-center gap-2 my-3">
           <input
             type="number"
@@ -75,13 +76,13 @@ const InventarioForm = () => {
           />
         </label>
         <SubmitButton
-          title={"Add"}
+          title={"Agregar"}
           isDirty={isDirty}
           isValid={isValid}
           isSubmitting={isSubmitting}
         />
       </form>
-      <TableContent />
+      <InventarioTableContent />
     </>
   );
 };
