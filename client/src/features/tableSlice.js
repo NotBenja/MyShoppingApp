@@ -1,4 +1,4 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const magic_table_data =
   localStorage.getItem("magic-table-data") != null
@@ -11,17 +11,9 @@ export const tableSlice = createSlice({
     rows: magic_table_data,
   },
   reducers: {
-    addRows: {
-      reducer: (state, action) => {
-        state.rows.push(action.payload);
-        state.rows = state.rows.sort((a, b) => +a.priority - +b.priority);
-        localStorage.setItem("magic-table-data", JSON.stringify(state.rows));
-      },
-      prepare: (priority, name) => {
-        return {
-          payload: { id: nanoid(), priority, name },
-        };
-      },
+    addRows: (state, action) => {
+      state.rows.push(action.payload);
+      localStorage.setItem("magic-table-data", JSON.stringify(state.rows));
     },
     deleteRows: (state, action) => {
       let filteredRows = state.rows.filter((row) => row.id !== action.payload);
@@ -29,13 +21,14 @@ export const tableSlice = createSlice({
       localStorage.setItem("magic-table-data", JSON.stringify(state.rows));
     },
     editRows: (state, action) => {
-      const { id, priority, name } = action.payload;
+      const { id, nombre, descripcion, precio, fecha_creacion } = action.payload;
       const currentTodo = state.rows.find((item) => item.id === id);
       if (currentTodo) {
-        currentTodo.priority = priority;
-        currentTodo.name = name;
+        currentTodo.nombre = nombre;
+        currentTodo.descripcion = descripcion;
+        currentTodo.precio = precio;
+        currentTodo.fecha_creacion = fecha_creacion;
       }
-      state.rows = state.rows.sort((a, b) => +a.priority - +b.priority);
       localStorage.setItem("magic-table-data", JSON.stringify(state.rows));
     },
   },

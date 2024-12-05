@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import editSchema from "utils/validations/form";
 import toast from "react-hot-toast";
+
 const EditModal = ({ currentRow }) => {
   const rows = useSelector((state) => state.rows);
   const {
@@ -20,30 +21,22 @@ const EditModal = ({ currentRow }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (currentRow && currentRow.length > 0) {
-      const { priority, name } = currentRow[0];
-      setValue("priority", priority);
-      setValue("name", name);
+      const { id, nombre, descripcion, precio, fecha_creacion } = currentRow[0];
+      setValue("id", id);
+      setValue("nombre", nombre);
+      setValue("descripcion", descripcion);
+      setValue("precio", precio);
+      setValue("fecha_creacion", new Date(fecha_creacion).toISOString().split('T')[0]);
     }
   }, [currentRow]);
   const submitHandler = () => {
     if (currentRow) {
       const { id } = currentRow[0];
-      let priority = +getValues("priority");
-      let name = getValues("name");
-      const currentPriority = currentRow[0].priority;
-      const isPriorityChanged = priority !== currentPriority;
-      if (isPriorityChanged) {
-        const isDuplicatePriority = rows.some(
-          (row) => row.priority === priority
-        );
-        if (isDuplicatePriority) {
-          toast.error(
-            "Duplicate priority! Please choose a different priority."
-          );
-          return;
-        }
-      }
-      dispatch(editRows({ id, priority, name }));
+      let nombre = getValues("nombre");
+      let descripcion = getValues("descripcion");
+      let precio = +getValues("precio");
+      let fecha_creacion = getValues("fecha_creacion");
+      dispatch(editRows({ id, nombre, descripcion, precio, fecha_creacion }));
       document.getElementById("my_modal_1").close();
     }
   };
@@ -60,18 +53,43 @@ const EditModal = ({ currentRow }) => {
             <div className="flex flex-col m-auto">
               <label className="input input-bordered input-sm flex items-center gap-2 my-3">
                 <input
-                  placeholder="Priority"
+                  placeholder="ID"
                   type="number"
                   className="grow"
-                  {...register("priority")}
+                  {...register("id")}
+                  disabled
                 />
               </label>
               <label className="input input-bordered input-sm flex items-center gap-2 my-3">
                 <input
+                  placeholder="Name"
                   type="text"
                   className="grow"
-                  placeholder="Name"
-                  {...register("name")}
+                  {...register("nombre")}
+                />
+              </label>
+              <label className="input input-bordered input-sm flex items-center gap-2 my-3">
+                <input
+                  placeholder="Description"
+                  type="text"
+                  className="grow"
+                  {...register("descripcion")}
+                />
+              </label>
+              <label className="input input-bordered input-sm flex items-center gap-2 my-3">
+                <input
+                  placeholder="Price"
+                  type="number"
+                  className="grow"
+                  {...register("precio")}
+                />
+              </label>
+              <label className="input input-bordered input-sm flex items-center gap-2 my-3">
+                <input
+                  placeholder="Creation Date"
+                  type="date"
+                  className="grow"
+                  {...register("fecha_creacion")}
                 />
               </label>
             </div>

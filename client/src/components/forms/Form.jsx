@@ -26,15 +26,16 @@ const Form = () => {
     reset();
   }, [isSubmitSuccessful]);
   const submitHandler = (data) => {
-    if (
-      hasDuplicateValues([...rows, { priority: data.priority }], "priority")
-    ) {
-      toast.error("Duplicate priority! Please choose a different priority.");
+    if (hasDuplicateValues([...rows, { id: data.id }], "id")) {
+      toast.error("Duplicate ID! Please choose a different ID.");
       return;
     }
-    dispatch(addRows(data.priority, data.name));
-    setValue("priority", "");
-    setValue("name", "");
+    const formattedData = {
+      ...data,
+      fecha_creacion: new Date(data.fecha_creacion).toISOString(),
+    };
+    dispatch(addRows(formattedData));
+    reset();
   };
   return (
     <>
@@ -48,17 +49,41 @@ const Form = () => {
         <label className="input input-bordered input-sm flex items-center gap-2 my-3">
           <input
             type="number"
-            {...register("priority")}
+            {...register("id")}
             className="grow"
-            placeholder="Priority"
+            placeholder="ID"
           />
         </label>
         <label className="input input-bordered input-sm flex items-center gap-2 my-3">
           <input
             type="text"
-            {...register("name")}
+            {...register("nombre")}
             className="grow"
             placeholder="Name"
+          />
+        </label>
+        <label className="input input-bordered input-sm flex items-center gap-2 my-3">
+          <input
+            type="text"
+            {...register("descripcion")}
+            className="grow"
+            placeholder="Description"
+          />
+        </label>
+        <label className="input input-bordered input-sm flex items-center gap-2 my-3">
+          <input
+            type="number"
+            {...register("precio")}
+            className="grow"
+            placeholder="Price"
+          />
+        </label>
+        <label className="input input-bordered input-sm flex items-center gap-2 my-3">
+          <input
+            type="date"
+            {...register("fecha_creacion")}
+            className="grow"
+            placeholder="Creation Date"
           />
         </label>
         <SubmitButton

@@ -22,8 +22,11 @@ const TableContent = () => {
           <table cellPadding="0" cellSpacing="0" border="0">
             <thead className="bg-blue-200 ">
               <tr>
-                <th>priority</th>
+                <th>ID</th>
                 <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Creation Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -35,8 +38,11 @@ const TableContent = () => {
             <tbody>
               {rows?.map((row, index) => (
                 <tr key={row?.id} className={index % 2 === 0 ? "even" : "odd"}>
-                  <td className="text-gray-500">{row?.priority}</td>
-                  <td>{row?.name}</td>
+                  <td className="text-gray-500">{row?.id}</td>
+                  <td>{row?.nombre}</td>
+                  <td>{row?.descripcion}</td>
+                  <td>{row?.precio}</td>
+                  <td>{new Date(row?.fecha_creacion).toLocaleDateString()}</td>
                   <td>
                     <span
                       onClick={() => editHandler(row?.id)}
