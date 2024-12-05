@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteRows } from "features/tableSlice";
+import { deleteVenta } from "features/ventasSlice";
 import EditModal from "../EditModal";
 import edit from "assets/pencil.svg";
 import trash from "assets/trash.svg";
 
-const TableContent = () => {
+const VentasTableContent = () => {
   const [currentRow, setCurrentRow] = useState(null);
-  const rows = useSelector((state) => state.productos.rows);
+  const rows = useSelector((state) => state.ventas.rows);
   const dispatch = useDispatch();
-  const deleteHandler = (id) => dispatch(deleteRows(id));
+  const deleteHandler = (id) => dispatch(deleteVenta(id));
   const editHandler = (id) => {
     document.getElementById("my_modal_1").showModal();
     let selectedRow = rows.filter((item) => item?.id === id);
     setCurrentRow(selectedRow);
   };
-  if (rows?.length) {
+  if (rows.length) {
     return (
       <div className="overflow-x-auto mx-auto mt-14 mb-24 max-w-[800px] rounded-2xl shadow-2xl">
         <div className="tbl-header">
@@ -23,10 +23,10 @@ const TableContent = () => {
             <thead className="bg-blue-200 ">
               <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Creation Date</th>
+                <th>Product ID</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Sale Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -39,10 +39,10 @@ const TableContent = () => {
               {rows?.map((row, index) => (
                 <tr key={row?.id} className={index % 2 === 0 ? "even" : "odd"}>
                   <td className="text-gray-500">{row?.id}</td>
-                  <td>{row?.nombre}</td>
-                  <td>{row?.descripcion}</td>
-                  <td>{row?.precio}</td>
-                  <td>{new Date(row?.fecha_creacion).toLocaleDateString()}</td>
+                  <td>{row?.producto_id}</td>
+                  <td>{row?.cantidad}</td>
+                  <td>{row?.total}</td>
+                  <td>{new Date(row?.fecha_venta).toLocaleDateString()}</td>
                   <td>
                     <span
                       onClick={() => editHandler(row?.id)}
@@ -68,7 +68,6 @@ const TableContent = () => {
       </div>
     );
   }
-  return null;
 };
 
-export default TableContent;
+export default VentasTableContent;

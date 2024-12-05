@@ -2,15 +2,15 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { addRows } from "features/tableSlice";
-import formSchema from "utils/validations/form";
+import { addVenta } from "features/ventasSlice";
+import formSchema from "utils/validations/ventasForm";
 import toast from "react-hot-toast";
 import { hasDuplicateValues } from "../../utils/hasDuplicateValues";
 import SubmitButton from "../common/SubmitButton";
-import TableContent from "./TableContent";
+import TableContent from "./VentasTableContent";
 
-const Form = () => {
-  const rows = useSelector((state) => state.productos.rows);
+const VentasForm = () => {
+  const rows = useSelector((state) => state.ventas.rows);
   const dispatch = useDispatch();
   const {
     register,
@@ -21,11 +21,9 @@ const Form = () => {
   } = useForm({
     resolver: yupResolver(formSchema),
   });
-
   useEffect(() => {
     reset();
   }, [isSubmitSuccessful]);
-
   const submitHandler = (data) => {
     if (hasDuplicateValues([...rows, { id: data.id }], "id")) {
       toast.error("Duplicate ID! Please choose a different ID.");
@@ -33,12 +31,11 @@ const Form = () => {
     }
     const formattedData = {
       ...data,
-      fecha_creacion: new Date(data.fecha_creacion).toISOString(),
+      fecha_venta: new Date(data.fecha_venta).toISOString(),
     };
-    dispatch(addRows(formattedData));
+    dispatch(addVenta(formattedData));
     reset();
   };
-
   return (
     <>
       <form
@@ -47,7 +44,7 @@ const Form = () => {
       >
         <label className="input input-bordered input-sm flex items-center gap-2 my-3">
           <input
-            type="text"
+            type="number"
             {...register("id")}
             className="grow"
             placeholder="ID"
@@ -55,34 +52,34 @@ const Form = () => {
         </label>
         <label className="input input-bordered input-sm flex items-center gap-2 my-3">
           <input
-            type="text"
-            {...register("nombre")}
+            type="number"
+            {...register("producto_id")}
             className="grow"
-            placeholder="Name"
-          />
-        </label>
-        <label className="input input-bordered input-sm flex items-center gap-2 my-3">
-          <input
-            type="text"
-            {...register("descripcion")}
-            className="grow"
-            placeholder="Description"
+            placeholder="Product ID"
           />
         </label>
         <label className="input input-bordered input-sm flex items-center gap-2 my-3">
           <input
             type="number"
-            {...register("precio")}
+            {...register("cantidad")}
             className="grow"
-            placeholder="Price"
+            placeholder="Quantity"
+          />
+        </label>
+        <label className="input input-bordered input-sm flex items-center gap-2 my-3">
+          <input
+            type="number"
+            {...register("total")}
+            className="grow"
+            placeholder="Total"
           />
         </label>
         <label className="input input-bordered input-sm flex items-center gap-2 my-3">
           <input
             type="date"
-            {...register("fecha_creacion")}
+            {...register("fecha_venta")}
             className="grow"
-            placeholder="Creation Date"
+            placeholder="Sale Date"
           />
         </label>
         <SubmitButton
@@ -97,4 +94,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default VentasForm;
