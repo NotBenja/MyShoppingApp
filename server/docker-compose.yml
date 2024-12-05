@@ -1,0 +1,19 @@
+services:
+  mysqldb:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=myshoppingapp
+      - MYSQL_DATABASE=tienda
+    ports:
+      - "3307:3306"
+    
+  app:
+    build: .
+    depends_on:
+      - mysqldb
+    links:
+      - mysqldb
+    ports:
+      - "4000:4000"
+
+

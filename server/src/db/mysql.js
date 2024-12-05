@@ -6,14 +6,15 @@ const dbConfig = {
     host: config.mysql.host,
     user: config.mysql.user,
     password: config.mysql.password,
-    database: config.mysql.database
+    database: config.mysql.database,
+    port: config.mysql.port
 };
 
-let connection;
+let pool;
 
 async function connMySql() {
     try {
-        connection = await mysql.createConnection(dbConfig);
+        pool = mysql.createPool(dbConfig);
         console.log('Connected to MySQL');
     } catch (err) {
         console.log('Error connecting to MySQL:', err);
@@ -25,7 +26,7 @@ connMySql();
 
 async function all(table) {
     try {
-        const [rows] = await connection.query(`SELECT * FROM ${table}`);
+        const [rows] = await pool.query(`SELECT * FROM ${table}`);
         return rows;
     } catch (err) {
         console.error('Error executing query:', err);
@@ -35,7 +36,7 @@ async function all(table) {
 
 async function one(table, id) {
     try {
-        const [rows] = await connection.query(`SELECT * FROM ${table} WHERE id = ?`, [id]);
+        const [rows] = await pool.query(`SELECT * FROM ${table} WHERE id = ?`, [id]);
         return rows[0];
     } catch (err) {
         console.error('Error executing query:', err);
@@ -45,7 +46,7 @@ async function one(table, id) {
 
 async function deleteP(table, { id }) {
     try {
-        const [result] = await connection.query(`DELETE FROM ${table} WHERE id = ?`, [id]);
+        const [result] = await pool.query(`DELETE FROM ${table} WHERE id = ?`, [id]);
         return result.affectedRows;
     } catch (err) {
         console.error('Error executing query:', err);
@@ -55,7 +56,7 @@ async function deleteP(table, { id }) {
 
 async function exists(table, id) {
     try {
-        const [rows] = await connection.query(`SELECT 1 FROM ${table} WHERE id = ? LIMIT 1`, [id]);
+        const [rows] = await pool.query(`SELECT 1 FROM ${table} WHERE id = ? LIMIT 1`, [id]);
         return rows.length > 0;
     } catch (err) {
         console.error('Error executing query:', err);
@@ -68,7 +69,7 @@ async function insert(table, data) {
         if (data.fecha_creacion) {
             data.fecha_creacion = moment(data.fecha_creacion).format('YYYY-MM-DD HH:mm:ss');
         }
-        const [result] = await connection.query(`INSERT INTO ${table} SET ?`, [data]);
+        const [result] = await pool.query(`INSERT INTO ${table} SET ?`, [data]);
         return result.insertId;
     } catch (err) {
         console.error('Error executing query:', err);
@@ -81,7 +82,7 @@ async function update(table, data) {
         if (data.fecha_creacion) {
             data.fecha_creacion = moment(data.fecha_creacion).format('YYYY-MM-DD HH:mm:ss');
         }
-        const [result] = await connection.query(`UPDATE ${table} SET ? WHERE id = ?`, [data, data.id]);
+        const [result] = await pool.query(`UPDATE ${table} SET ? WHERE id = ?`, [data, data.id]);
         return result.affectedRows;
     } catch (err) {
         console.error('Error executing query:', err);
@@ -97,4 +98,4 @@ async function create(table, data) {
     }
 }
 
-export default { all, one, create, deleteP, exists };
+export default { all, one, create, deleteP, exists, pool };
