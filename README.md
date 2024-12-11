@@ -32,7 +32,7 @@ La aplicación sigue una arquitectura basada en servicios, donde el frontend y e
 
 1. Clona el repositorio:
 ```shell
-https://github.com/NotBenja/MyShoppingApp.git
+git clone https://github.com/NotBenja/MyShoppingApp.git
 cd OpAI_Shop
 ```
 
