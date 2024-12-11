@@ -1,5 +1,5 @@
-# OpAI_Shop
-El proyecto FullStack OpAI_Shop ofrece una aplicación que permite realizar consultas CRUD sobre diferentes tablas de una tienda mediante una interfaz de usuario. Este proyecto fue diseñado con una arquitectura moderna y tecnologías actuales para proporcionar una experiencia rápida y eficiente.
+# MyShoppingApp
+El proyecto FullStack MyShoppingApp ofrece una aplicación que permite realizar consultas CRUD sobre diferentes tablas de una tienda mediante una interfaz de usuario. Este proyecto fue diseñado con una arquitectura moderna y tecnologías actuales para proporcionar una experiencia rápida y eficiente.
 
 ## Tecnologías/Herramientas utilizadas
 
@@ -32,7 +32,7 @@ La aplicación sigue una arquitectura basada en servicios, donde el frontend y e
 
 1. Clona el repositorio:
 ```shell
-git clone https://github.com/tu-usuario/OpAI_Shop.git
+https://github.com/NotBenja/MyShoppingApp.git
 cd OpAI_Shop
 ```
 
